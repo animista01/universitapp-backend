@@ -40,6 +40,8 @@ module UniversitappBackend
     config.filter_parameters += [:password]
 
     # Enable escaping HTML in JSON.
+    config.time_zone = 'Bogota'
+    config.active_record.default_timezone = :local
     config.active_support.escape_html_entities_in_json = true
 
     # Use SQL instead of Active Record's schema dumper when creating the database.
