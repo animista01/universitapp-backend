@@ -42,7 +42,7 @@ class ApiController < ApplicationController
 	end
 
 	def get_homeworks
-		sqlForUser = "select * from users where token = '#{params[:token]}' COLLATE utf8_bin"
+		sqlForUser = "select * from users where token = '#{params[:token]}'"
 		userId = User.find_by_sql(sqlForUser)
 		if userId.empty?
 			invalid_user
