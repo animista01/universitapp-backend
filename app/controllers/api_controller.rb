@@ -19,12 +19,8 @@ class ApiController < ApplicationController
 		    @user.password = params[:password]
 	   		@user.token = @user.generate_token
 
-	   		results = agent.submit(form)
-			@allHomeworks = []
-			newPage = agent.get('http://aulavirtual.unisimonbolivar.edu.co:8008/aulapregrado/calendar/view.php').search("div.eventlist").css("a")
-			newPage.each do |result|
-				@allHomeworks.push result
-			end
+			samePage = agent.get('http://aulavirtual.unisimonbolivar.edu.co:8008/aulapregrado/calendar/view.php').search("div.logininfo").css("a")
+	   		@user.name = samePage[0].text
 
 	   		begin
 		      	if @user.save
@@ -61,7 +57,7 @@ class ApiController < ApplicationController
 				@allHomeworks.push result
 			end
 			if not @allHomeworks.empty?
-				render :json => {:status => 200, :homeworks => @allHomeworks.each_slice(4).each_with_index.map{|data, i| { _id: i, title: data[1].text, url: data[1]['href'], asignature: data[2].text, end_date: data[3].text} }}
+				render :json => {:status => 200, :name => userId.first.name, :homeworks => @allHomeworks.each_slice(4).each_with_index.map{|data, i| { _id: i, title: data[1].text, url: data[1]['href'], asignature: data[2].text, end_date: data[3].text}} }
 			else
 				render :json => {:status => 401, :message => 'No tienes tareas' }
 			end
