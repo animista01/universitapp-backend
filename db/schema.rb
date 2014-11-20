@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20141120025442) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "name",       :null => false
+    t.string   "name"
     t.string   "username",   :null => false
     t.string   "password",   :null => false
     t.string   "token",      :null => false
