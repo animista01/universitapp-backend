@@ -4,7 +4,7 @@ class ApiController < ApplicationController
 	respond_to :json
 	def login
 		agent = Mechanize.new
-		page = agent.get('http://aulavirtual.unisimonbolivar.edu.co:8008/aulapregrado/')
+		page = agent.get('http://aulavirtual.unisimonbolivar.edu.co/aulapregrado/login/index.php')
 
 		form = page.form_with(:id => 'login')
 		form.username = params[:username]
@@ -19,7 +19,7 @@ class ApiController < ApplicationController
 		    @user.password = params[:password]
 	   		@user.token = @user.generate_token
 
-			samePage = agent.get('http://aulavirtual.unisimonbolivar.edu.co:8008/aulapregrado/calendar/view.php').search("div.logininfo").css("a")
+			samePage = agent.get('http://aulavirtual.unisimonbolivar.edu.co/aulapregrado/calendar/view.php').search("li a em").css("em")
 	   		@user.name = samePage[0].text
 
 	   		begin
@@ -44,7 +44,7 @@ class ApiController < ApplicationController
 			invalid_user
 		else
 			agent = Mechanize.new
-			page = agent.get('http://aulavirtual.unisimonbolivar.edu.co:8008/aulapregrado/')
+			page = agent.get('http://aulavirtual.unisimonbolivar.edu.co/aulapregrado/login/index.php')
 
 			form = page.form_with(:id => 'login')
 			form.username = userId.first.username
@@ -52,21 +52,21 @@ class ApiController < ApplicationController
 
 			results = agent.submit(form)
 			@allHomeworks = []
-			newPage = agent.get('http://aulavirtual.unisimonbolivar.edu.co:8008/aulapregrado/calendar/view.php').search("div.eventlist").css("a")
+			newPage = agent.get('http://aulavirtual.unisimonbolivar.edu.co/aulapregrado/calendar/view.php').search("div.eventlist").css("a")
 			newPage.each do |result|
 				@allHomeworks.push result
 			end
 			if not @allHomeworks.empty?
 				render :json => {:status => 200, :name => userId.first.name, :homeworks => @allHomeworks.each_slice(4).each_with_index.map{|data, i| { _id: i, title: data[1].text, url: data[1]['href'], asignature: data[2].text, end_date: data[3].text}} }
 			else
-				render :json => {:status => 401, :message => 'No tienes tareas' }
+				render :json => {:status => 401, :message => 'Ve por unas cervezas porque no tienes tareas ;)'}
 			end
 		end
 	end
 
 	private
 	def invalid_user
-		render :json => {:status => 401, :success => false, :message => "Hay un error con tu token :'("}
+		render :json => {:status => 401, :success => false, :message => "Hay un error con tu token :'( </3"}
 	end
 
 end
