@@ -56,9 +56,9 @@ class ApiController < ApplicationController
 				@allHomeworks.push result
 			end
 			if not @allHomeworks.empty?
-				render :json => {:status => 200, , :id => findUser.id, :name => findUser.name, :homeworks => @allHomeworks.each_slice(4).each_with_index.map{|data, i| { _id: i, title: data[1].text, url: data[1]['href'], asignature: data[2].text, end_date: data[3].text}} }
+				render :json => {:status => 200, :id => findUser.id, :name => findUser.name, :homeworks => @allHomeworks.each_slice(4).each_with_index.map{|data, i| { _id: i, title: data[1].text, url: data[1]['href'], asignature: data[2].text, end_date: data[3].text}} }
 			else
-				render :json => {:status => 401, , :id => findUser.id, :name => findUser.name, :message => 'Ve por unas cervezas porque no tienes tareas ;)'}
+				render :json => {:status => 401, :id => findUser.id, :name => findUser.name, :message => 'Ve por unas cervezas porque no tienes tareas ;)'}
 			end
 		end
 	end
