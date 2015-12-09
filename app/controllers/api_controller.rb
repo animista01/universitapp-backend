@@ -24,7 +24,7 @@ class ApiController < ApplicationController
 
 	   		begin
 		      	if @user.save
-		  			render :json => {:status => 200, :message => 'Success', :token => @user.token}
+		  			render :json => {:status => 200, :id => @user.id, :name => @user.name, :message => 'Success', :token => @user.token}
 	      		else	
 	      			errors = @user.errors.full_messages.to_s.tr('][','')
 	      			errors = errors.tr('"','')
@@ -32,7 +32,7 @@ class ApiController < ApplicationController
 				end
 	   		rescue Exception => e
 	   			user = User.where(:username => params[:username]).where(:password => params[:password]).first
-	  			render :json => {:status => 201, :message => 'Ya existia', :token => user.token}
+	  			render :json => {:status => 201, :id => user.id, :name => user.name, :message => 'Ya existia', :token => user.token}
 	   		end
 		end
 	end
